@@ -2,6 +2,7 @@ import gi
 
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
+"""PyGObject"""
 
 
 class PrimeiraFiestraGlade():
@@ -24,7 +25,7 @@ class PrimeiraFiestraGlade():
     def on_btnSair_clicked(self, boton):
         """print(datos_usuario)"""
         self.on_pechar()
-        
+
 
 if __name__ == '__main__':
     PrimeiraFiestraGlade()
