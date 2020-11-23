@@ -100,12 +100,74 @@ class CalculadoraGtk(Gtk.Window):
             if valor == "AC":
                 self.saida = ""
             if valor == "igual":
-                self.saida = ""
+                self.saida = str(self.calcular_resultado())
+
         else:
             self.saida = self.saida + valor
 
-        if valor != "igual":
-            self.saida_entry.set_text(self.saida)
+        self.saida_entry.set_text(self.saida)
+
+    def calcular_resultado(self):
+        operacion = []
+        numero = ""
+        tipo = "int"
+
+        for c in self.saida:
+            if c != "+" and c != "-" and c != "×" and c != "÷":
+                numero = numero + c
+                if c == ".":
+                    tipo = "float"
+            else:
+                if tipo == "float":
+                    operacion.append(float(numero))
+                else:
+                    operacion.append(int(numero))
+                operacion.append(c)
+                numero = ""
+                tipo = ""
+        if numero != "":
+            if tipo == "float":
+                operacion.append(float(numero))
+            else:
+                operacion.append(int(numero))
+
+        resultado = ""
+        operador = ""
+        n1 = 0
+        n2 = 0
+
+        for o in operacion:
+            if o == "+" or o == "-" or o == "×" or o == "÷":
+                operador = o
+                # print("operador: " + operador)
+            else:
+                if resultado == "":
+                    if n1 == 0:
+                        n1 = o
+                    elif n2 == 0:
+                        n2 = o
+                        # print(str(n1) + " " + operador + " " + str(n2))
+                        resultado = self.operar(operador, n1, n2)
+                else:
+                    n1 = resultado
+                    n2 = o
+                    # print(str(n1) + " " + operador + " " + str(n2))
+                    resultado = self.operar(operador, n1, n2)
+
+        # print("resultado: "+str(resultado))
+        return resultado
+
+    def operar(self, operador, n1, n2):
+        resultado = 0
+        if operador == "+":
+            resultado = (n1 + n2)
+        elif operador == "-":
+            resultado = (n1 - n2)
+        elif operador == "×":
+            resultado = (n1 * n2)
+        elif operador == "÷":
+            resultado = (n1 / n2)
+        return resultado
 
 
 if __name__ == '__main__':
